@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Evan\\Downloads\\apipost\\Postdb\\Postdb.csproj": {}
+    "C:\\Users\\Evan\\Downloads\\Quickslyfirst\\apipost\\Postdb\\Postdb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Evan\\Downloads\\apipost\\Postdb\\Postdb.csproj": {
+    "C:\\Users\\Evan\\Downloads\\Quickslyfirst\\apipost\\Postdb\\Postdb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Evan\\Downloads\\apipost\\Postdb\\Postdb.csproj",
+        "projectUniqueName": "C:\\Users\\Evan\\Downloads\\Quickslyfirst\\apipost\\Postdb\\Postdb.csproj",
         "projectName": "Postdb",
-        "projectPath": "C:\\Users\\Evan\\Downloads\\apipost\\Postdb\\Postdb.csproj",
+        "projectPath": "C:\\Users\\Evan\\Downloads\\Quickslyfirst\\apipost\\Postdb\\Postdb.csproj",
         "packagesPath": "C:\\Users\\Evan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Evan\\Downloads\\apipost\\Postdb\\obj\\",
+        "outputPath": "C:\\Users\\Evan\\Downloads\\Quickslyfirst\\apipost\\Postdb\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
