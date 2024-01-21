@@ -25,16 +25,16 @@ public class Postcontroller:ControllerBase{
     [HttpGet ("api/Post")]
     public ActionResult getallpost(){
 
-      //  var response = posts.getpost();
-       return Ok();
+       var response = posts.getpost();
+       return Ok(response);
 
     }
 
     [HttpGet ("api/Post/{id:int}")]
     public ActionResult get1post(int request){
 
-      //  var response= posts.GetsinglePost(request);
-       return Ok();
+       var response= posts.GetsinglePost(request);
+       return Ok(response);
 
     }
 
