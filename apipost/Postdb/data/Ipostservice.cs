@@ -7,7 +7,7 @@ public interface Ipost{
 
     Post GetsinglePost(int id);
 
-    void Createpost(Post post);
+    void Createpost(Postrequest post);
 
     void updatepost(Post post);
 

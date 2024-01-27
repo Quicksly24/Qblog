@@ -287,3 +287,4 @@ C:/Users/Evan/Downloads/apipost/postdb/bin/Debug/net8.0/runtimes/win/lib/net6.0/
 /Users/jeffreyekpo/Desktop/Qblog/Qblog/Qblog/apipost/Postdb/obj/Debug/net8.0/Postdb.genruntimeconfig.cache
 /Users/jeffreyekpo/Desktop/Qblog/Qblog/Qblog/apipost/Postdb/obj/Debug/net8.0/ref/Postdb.dll
 >>>>>>> 583e16636ae959c444bcfc2e26f6e695f1809bfb
+C:\Users\Evan\Downloads\Quickslyfirst\apipost\Postdb\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -29,10 +29,21 @@ public class Postsevices : Ipost
 
 
     };
-    public void Createpost(Post post)
+    public void Createpost(Postrequest post)
     {
-        posts.Add(post);
+        var pop =new Post(){
+            id=Guid.NewGuid().ToString(),
+            title=post.title,
+            body=post.body,
+            Username="",
+            CreatedAt=DateTime.UtcNow
+
+        };
+
+        posts.Add(pop);
     }
+
+   
 
     public void deletepost(int id)
     {

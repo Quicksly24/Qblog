@@ -29,6 +29,11 @@ public class Dataacess : Ipost
         }
     }
 
+    public void Createpost(Postrequest post)
+    {
+        throw new NotImplementedException();
+    }
+
     public void deletepost(int ids)
     {
         using(var connection = new SqlConnection(connectionstring)){

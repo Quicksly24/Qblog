@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Postdb.data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,8 +8,27 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<Itoken,Tokenaccess>();
 builder.Services.AddSingleton<Ipost,Postsevices>();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddSingleton<Iauth,Authservces>();
+
+
+
+builder.Services.AddAuthentication(defaultScheme:JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters(){
+
+                    ValidIssuer="solo",
+                    ValidAudience="post",
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication-")),
+                    ValidateIssuer=true,
+                    ValidateLifetime=true,
+                    ValidateIssuerSigningKey=true,
+                    ValidateAudience=true,
+
+                });
+builder.Services.AddAuthorization();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -38,7 +60,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

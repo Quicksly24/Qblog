@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Postdb.model;
 using Postdb.data;
+using Microsoft.AspNetCore.Authorization;
 namespace Postdb.Controllers;
 
+[Authorize]
 [ApiController]
 public class Postcontroller:ControllerBase{
 
@@ -14,7 +16,7 @@ public class Postcontroller:ControllerBase{
     }
 
     [HttpPost ("api/Post")]
-    public ActionResult Createpost(Post request){
+    public ActionResult Createpost(Postrequest request){
 
        posts.Createpost(request);
 
@@ -22,6 +24,8 @@ public class Postcontroller:ControllerBase{
 
     }
 
+
+    [AllowAnonymous]
     [HttpGet ("api/Post")]
     public ActionResult getallpost(){
 
@@ -39,7 +43,14 @@ public class Postcontroller:ControllerBase{
     }
 
     [HttpPut ("api/Post/")]
-    public ActionResult updatepost(Post request){
+    public ActionResult updatepost(string id,string title,string body){
+
+      var request = new Post(){
+         id=id,
+         title=title,
+         body=body,
+            
+      };
 
             posts.updatepost(request);
             return Ok("success");
