@@ -5,13 +5,13 @@ public interface Ipost{
 
     List<Post> getpost();
 
-    Post GetsinglePost(int id);
+    Post GetsinglePost(string id);
 
     void Createpost(Postrequest post);
 
     void updatepost(Post post);
 
-    void deletepost(int id);
+    void deletepost(string id);
 
 
 }

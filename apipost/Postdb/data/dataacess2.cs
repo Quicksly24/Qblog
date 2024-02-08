@@ -45,7 +45,7 @@ public class Postsevices : Ipost
 
    
 
-    public void deletepost(int id)
+    public void deletepost(string id)
     {
         string ids=id.ToString();
         var item = posts.Single(x => x.id==ids);
@@ -57,7 +57,7 @@ public class Postsevices : Ipost
         return posts.ToList();
     }
 
-    public Post GetsinglePost(int id)
+    public Post GetsinglePost(string id)
     {
         string ids=id.ToString();
         return posts.Where(x=>x.id == ids).Single();

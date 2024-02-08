@@ -44,6 +44,11 @@ public class Dataacess : Ipost
         
     }
 
+    public void deletepost(string id)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<Post> getpost()
     {
         using(var connection = new SqlConnection(connectionstring)){
@@ -60,6 +65,11 @@ public class Dataacess : Ipost
             return connection.QuerySingle<Post>(singlereadquery,new{id=ids});
 
         }
+    }
+
+    public Post GetsinglePost(string id)
+    {
+        throw new NotImplementedException();
     }
 
     public void updatepost(Post post)

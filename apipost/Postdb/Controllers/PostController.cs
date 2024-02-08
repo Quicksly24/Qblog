@@ -15,6 +15,7 @@ public class Postcontroller:ControllerBase{
         this.posts = posts;
     }
 
+    [AllowAnonymous]
     [HttpPost ("api/Post")]
     public ActionResult Createpost(Postrequest request){
 
@@ -33,15 +34,16 @@ public class Postcontroller:ControllerBase{
        return Ok(response);
 
     }
-
+     
+    [AllowAnonymous]
     [HttpGet ("api/Post/{id:int}")]
-    public ActionResult get1post(int request){
+    public ActionResult get1post(string request){
 
        var response= posts.GetsinglePost(request);
        return Ok(response);
 
     }
-
+    [AllowAnonymous]
     [HttpPut ("api/Post/")]
     public ActionResult updatepost(string id,string title,string body){
 
@@ -49,6 +51,7 @@ public class Postcontroller:ControllerBase{
          id=id,
          title=title,
          body=body,
+         Username="jeff"
             
       };
 
@@ -57,8 +60,9 @@ public class Postcontroller:ControllerBase{
 
     }
 
-     [HttpDelete ("api/Post/{id:int}")]
-    public ActionResult deletepost(int id){
+     [AllowAnonymous]
+     [HttpDelete ("api/Post/")]
+    public ActionResult deletepost(string id){
 
        posts.deletepost(id);
        return Ok("success");

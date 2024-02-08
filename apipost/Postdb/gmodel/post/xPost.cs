@@ -1,7 +1,12 @@
 
 
- public class Post
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+public class Post
     {
+         [BsonId]
+         [BsonRepresentation(BsonType.ObjectId)]
          public string id{get;set;}
 
          public string Username{get;set;}
