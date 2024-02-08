@@ -5,7 +5,7 @@ namespace Postdb.data
 {
     public class Mongodata : Ipost
     {
-        string connectstring= "mongodb+srv://Quicksly:f4PvWY5G3RtuZcQo@cluster0.d2muozt.mongodb.net/?retryWrites=true&w=majority";
+        string connectstring= "";
         string database="Quick";
         private const string colloctionname="Postv1";
         private const string colloctionname1 = "Postv2";
