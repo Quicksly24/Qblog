@@ -9,10 +9,12 @@ namespace Postdb.Controllers;
 public class Postcontroller:ControllerBase{
 
     private readonly Ipost posts;
+    private readonly Ilike like;
 
-    public Postcontroller(Ipost posts)
+    public Postcontroller(Ipost posts,Ilike like)
     {
         this.posts = posts;
+        this.like = like;
     }
 
     [AllowAnonymous]
@@ -47,16 +49,8 @@ public class Postcontroller:ControllerBase{
     [HttpPut ("api/Post/")]
     public ActionResult updatepost(string id,string title,string body){
 
-      var request = new Post(){
-         id=id,
-         title=title,
-         body=body,
-         Username="jeff"
-            
-      };
-
-            posts.updatepost(request);
-            return Ok("success");
+           var response = posts.updatepost1(id,title,body);
+            return Ok(response);
 
     }
 
@@ -66,6 +60,36 @@ public class Postcontroller:ControllerBase{
 
        posts.deletepost(id);
        return Ok("success");
+
+    }
+
+      [AllowAnonymous]
+    [HttpPost("api/Post/like")]
+
+    public ActionResult likepost(string postid,string user){
+
+
+      var response = like.Likepost(postid,user);  
+      return Ok(response);
+
+    }
+     [AllowAnonymous]
+    [HttpDelete("api/Post/like")]
+
+    public ActionResult unlikepost(string likeid){
+
+      var response=like.unLikepost(likeid);
+
+      return Ok(response);
+
+    }
+      [AllowAnonymous]
+     [HttpGet("api/Post/like")]
+
+     public ActionResult likepostcount(string postid){
+       
+      var response = like.postcount(postid);
+      return Ok(response);
 
     }
 

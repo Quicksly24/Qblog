@@ -9,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<Itoken,Tokenaccess>();
-builder.Services.AddSingleton<Ipost,Mongodata>();
-builder.Services.AddSingleton<Iauth,Authservces>();
+builder.Services.AddScoped<Ipost,Mongodata>();
+builder.Services.AddScoped<Ilike,Mongodata>();
+builder.Services.AddSingleton<Iauth,Authuser>();
+builder.Services.AddScoped<Ifollow,Authuser>();
 
 
 

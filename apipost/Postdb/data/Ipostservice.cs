@@ -1,3 +1,4 @@
+using MongoDB.Driver;
 using Postdb.data;
 using Postdb.model;
 
@@ -12,6 +13,8 @@ public interface Ipost{
     void updatepost(Post post);
 
     void deletepost(string id);
+
+    public UpdateResult updatepost1(string id,string title,string body);
 
 
 }

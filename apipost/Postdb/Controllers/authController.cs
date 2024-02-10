@@ -6,10 +6,12 @@ public class Authcontoller:ControllerBase{
 
 
     private readonly Iauth _auth;
+    private readonly Ifollow follow;
 
-    public Authcontoller(Iauth auth)
+    public Authcontoller(Iauth auth,Ifollow follow)
     {
         _auth = auth;
+        this.follow = follow;
     }
 
     [HttpPost("api/login")]
@@ -29,6 +31,23 @@ public class Authcontoller:ControllerBase{
         var response =  _auth.register(username,email,password);
 
         return Ok(response);
+    }
+
+    [HttpPost("api/follow")]
+
+    public ActionResult followuser(string id,string followerid){
+
+        follow.follow(id,followerid);
+        return Ok();
+
+    }
+
+    [HttpDelete("api/follow")]
+
+    public ActionResult unfollowuser(string id,string followerid){
+
+        return Ok();
+        
     }
 
 

@@ -3,7 +3,7 @@
 public interface Itoken{
 
 
-    public string gentoken(string username,string password);
+    public string gentoken(string username,string email);
 
 
 }

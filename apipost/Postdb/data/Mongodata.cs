@@ -1,15 +1,19 @@
-﻿using MongoDB.Driver;
+﻿using System.Net;
+using MongoDB.Driver;
+using Postdb.gmodel.post;
 using Postdb.model;
 
 namespace Postdb.data
 {
-    public class Mongodata : Ipost
+    public class Mongodata : Ipost,Ilike
     {
-        string connectstring= "mongodb+srv://Quicksly:f4PvWY5G3RtuZcQo@cluster0.d2muozt.mongodb.net/?retryWrites=true&w=majority";
+        string connectstring= "";
         string database="Quick";
         private const string colloctionname="Postv1";
-        private const string colloctionname1 = "Postv2";
+    
         private const string colloctionname2 = "Likes";
+
+    
 
         public IMongoCollection<T> mongoCollection<T>(in string collection)
         {
@@ -60,13 +64,55 @@ namespace Postdb.data
         public void updatepost(Post post)
         {
             var collect = mongoCollection<Post>(colloctionname);
-            var filter = Builders<Post>.Filter.Eq("Id",post.id);
+            var filter = Builders<Post>.Filter.Eq("id",post.id);
             var update = Builders<Post>.Update.Set(x=>x.title,post.title).Set(x=>x.title,post.body);
 
             collect.UpdateOne(filter,update);
-           
-             
+                   
+        }
+
+         public UpdateResult updatepost1(string id,string title,string body)
+        {
+            var collect = mongoCollection<Post>(colloctionname);
+            var filter = Builders<Post>.Filter.Eq("id",id);
+            var update = Builders<Post>.Update.Set(x=>x.title,title).Set(x=>x.body,body);
+
+            
+
+           return collect.UpdateOne(filter,update);
+                   
+        }
+
+        public string Likepost(string postid,string user)
+        {
+            var lik = new Likes{Postid=postid,User=user};
+
+            var collect = mongoCollection<Likes>(colloctionname2);
+            collect.InsertOne(lik);
+
+           return "success";
             
         }
+
+        public string unLikepost(string likeid)
+        {
+           var collect = mongoCollection<Likes>(colloctionname2);  
+           collect.DeleteOne(x=>x.Id==likeid);
+
+           return "success";
+        }
+
+      
+        public long postcount(string postid)
+        {
+             var collect = mongoCollection<Likes>(colloctionname2);  
+
+            
+            long num2=collect.CountDocuments(x=>x.Postid==postid);
+            
+            return num2;
+        }
+
+
     }
 }

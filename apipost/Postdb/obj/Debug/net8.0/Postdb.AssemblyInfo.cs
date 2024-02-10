@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Postdb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+09c53c642396c6a84959914d7e7508078fcad87e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5725f935a78244ef63c0bc2eb3535662f686bed3")]
 [assembly: System.Reflection.AssemblyProductAttribute("Postdb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Postdb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
