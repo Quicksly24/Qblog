@@ -113,7 +113,13 @@ public class Authuser : Iauth, Ifollow
 
     public void unfollow(string id,string followerid)
     {
-        throw new NotImplementedException();
+        var collect = getcollection<User>(collectionname);
+
+        var filter = Builders<User>.Filter.Eq(u=>u.id,id);
+
+        var update = Builders<User>.Update.PullFilter(u=>u.followers,f=>f.userid==followerid);
+
+        collect.UpdateOne(filter,update);
     }
 
 
