@@ -46,6 +46,7 @@ public class Authcontoller:ControllerBase{
 
     public ActionResult unfollowuser(string id,string followerid){
 
+        follow.unfollow(id,followerid);    
         return Ok();
         
     }
