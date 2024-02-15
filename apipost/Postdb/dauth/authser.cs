@@ -52,7 +52,7 @@ public class Authuser : Iauth, Ifollow
     }
     else
     {
-        return null;
+        throw new Exception("username or password wrong");
     }
 
     }
@@ -66,7 +66,7 @@ public class Authuser : Iauth, Ifollow
 
         if(exist != null){
 
-            return null;
+         throw new Exception("mandem user name is already taken");
 
         };
 
@@ -113,7 +113,15 @@ public class Authuser : Iauth, Ifollow
 
     public void unfollow(string id,string followerid)
     {
-        throw new NotImplementedException();
+        
+        var collect = getcollection<User>(collectionname);
+
+        var filter = Builders<User>.Filter.Eq(u=>u.id,id);
+
+        var update = Builders<User>.Update.PullFilter(u=>u.followers,f=>f.userid==followerid);
+
+        collect.UpdateOne(filter,update);
+
     }
 
 

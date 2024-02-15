@@ -13,6 +13,7 @@ builder.Services.AddScoped<Ipost,Mongodata>();
 builder.Services.AddScoped<Ilike,Mongodata>();
 builder.Services.AddSingleton<Iauth,Authuser>();
 builder.Services.AddScoped<Ifollow,Authuser>();
+builder.Services.AddTransient<Exceptionhandler>();
 
 
 
@@ -59,7 +60,9 @@ if (app.Environment.IsDevelopment())
 
 }
 
+
 app.UseCors();
+app.UseMiddleware<Exceptionhandler>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
