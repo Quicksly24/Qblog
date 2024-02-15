@@ -113,7 +113,6 @@ public class Authuser : Iauth, Ifollow
 
     public void unfollow(string id,string followerid)
     {
-        
         var collect = getcollection<User>(collectionname);
 
         var filter = Builders<User>.Filter.Eq(u=>u.id,id);
@@ -121,7 +120,6 @@ public class Authuser : Iauth, Ifollow
         var update = Builders<User>.Update.PullFilter(u=>u.followers,f=>f.userid==followerid);
 
         collect.UpdateOne(filter,update);
-
     }
 
 

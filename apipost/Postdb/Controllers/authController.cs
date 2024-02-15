@@ -48,6 +48,7 @@ public class Authcontoller:ControllerBase{
 
         follow.unfollow(id,followerid);
 
+        follow.unfollow(id,followerid);    
         return Ok();
         
     }
