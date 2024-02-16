@@ -4,11 +4,12 @@ using Postdb.model;
 
 public interface Ipost{
 
+   
     List<Post> getpost();
 
     Post GetsinglePost(string id);
 
-    void Createpost(Postrequest post);
+    void Createpost(Postrequest post,string user);
 
     void updatepost(Post post);
 

@@ -8,7 +8,7 @@ using MongoDB.Driver;
 public class Authuser : Iauth, Ifollow
 {
 
-     string connectstring= "";
+     string connectstring= "mongodb+srv://Quicksly:f4PvWY5G3RtuZcQo@cluster0.d2muozt.mongodb.net/?retryWrites=true&w=majority";
      string database = "User";
 
     string collectionname= "users";

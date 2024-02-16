@@ -7,7 +7,7 @@ namespace Postdb.data
 {
     public class Mongodata : Ipost,Ilike
     {
-        string connectstring= "";
+        string connectstring= "mongodb+srv://Quicksly:f4PvWY5G3RtuZcQo@cluster0.d2muozt.mongodb.net/?retryWrites=true&w=majority";
         string database="Quick";
         private const string colloctionname="Postv1";
     
@@ -24,12 +24,12 @@ namespace Postdb.data
         }
 
 
-        public void Createpost(Postrequest post)
+        public void Createpost(Postrequest post,string user)
         {
             var posts = new Post{
                   body=post.body,
                   title=post.title,
-                  Username="jeff",
+                  Username=user,
                   CreatedAt=DateTime.UtcNow
 
             };

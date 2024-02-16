@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postdb.model;
 using Postdb.data;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 namespace Postdb.Controllers;
 
 [Authorize]
@@ -17,13 +18,15 @@ public class Postcontroller:ControllerBase{
         this.like = like;
     }
 
-    [AllowAnonymous]
+  
     [HttpPost ("api/Post")]
     public ActionResult Createpost(Postrequest request){
 
-       posts.Createpost(request);
 
-       return Ok("success");
+       var user= User.FindFirstValue(ClaimTypes.Name);
+       posts.Createpost(request,user);
+
+       return Ok(user);
 
     }
 
@@ -37,7 +40,7 @@ public class Postcontroller:ControllerBase{
 
     }
      
-    [AllowAnonymous]
+  
     [HttpGet ("api/Post/{id:int}")]
     public ActionResult get1post(string request){
 
@@ -45,7 +48,7 @@ public class Postcontroller:ControllerBase{
        return Ok(response);
 
     }
-    [AllowAnonymous]
+    
     [HttpPut ("api/Post/")]
     public ActionResult updatepost(string id,string title,string body){
 
@@ -54,7 +57,7 @@ public class Postcontroller:ControllerBase{
 
     }
 
-     [AllowAnonymous]
+     
      [HttpDelete ("api/Post/")]
     public ActionResult deletepost(string id){
 
@@ -63,7 +66,7 @@ public class Postcontroller:ControllerBase{
 
     }
 
-      [AllowAnonymous]
+     
     [HttpPost("api/Post/like")]
 
     public ActionResult likepost(string postid,string user){
@@ -73,7 +76,8 @@ public class Postcontroller:ControllerBase{
       return Ok(response);
 
     }
-     [AllowAnonymous]
+
+     
     [HttpDelete("api/Post/like")]
 
     public ActionResult unlikepost(string likeid){
@@ -83,7 +87,7 @@ public class Postcontroller:ControllerBase{
       return Ok(response);
 
     }
-      [AllowAnonymous]
+    
      [HttpGet("api/Post/like")]
 
      public ActionResult likepostcount(string postid){

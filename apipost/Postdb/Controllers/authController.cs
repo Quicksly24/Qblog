@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -33,7 +34,8 @@ public class Authcontoller:ControllerBase{
         return Ok(response);
     }
 
-    [HttpPost("api/follow")]
+     [Authorize]
+     [HttpPost("api/follow")]
 
     public ActionResult followuser(string id,string followerid){
 
@@ -42,11 +44,11 @@ public class Authcontoller:ControllerBase{
 
     }
 
+    [Authorize]
     [HttpDelete("api/follow")]
 
     public ActionResult unfollowuser(string id,string followerid){
 
-        follow.unfollow(id,followerid);
 
         follow.unfollow(id,followerid);    
         return Ok();

@@ -14,7 +14,7 @@ public class Tokenaccess:Itoken{
         var signcredentials= new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication-")),SecurityAlgorithms.HmacSha256);
 
         var claims= new[]{
-            new Claim(JwtRegisteredClaimNames.Name,username),
+            new Claim(ClaimTypes.Name,username),
             new Claim(JwtRegisteredClaimNames.Email,password),
             new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
         };
