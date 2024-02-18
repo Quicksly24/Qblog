@@ -3,15 +3,22 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 public class Tokenaccess:Itoken{
 
+    private readonly Validator _validator;
 
-      public string gentoken(string username,string password){
+    public Tokenaccess(IOptions<Validator> validator)
+    {
+        _validator = validator.Value;
+    }
+
+    public string gentoken(string username,string password){
 
         
-        var signcredentials= new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication-")),SecurityAlgorithms.HmacSha256);
+        var signcredentials= new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_validator.secret)),SecurityAlgorithms.HmacSha256);
 
         var claims= new[]{
             new Claim(ClaimTypes.Name,username),
@@ -20,10 +27,9 @@ public class Tokenaccess:Itoken{
         };
 
         var securitytoken = new JwtSecurityToken(
-            issuer:"solo",
-            audience:"post",
-            // expires:_datetime.utcnow.AddMinutes(60),
-            expires:DateTime.UtcNow.AddHours(10),
+            issuer:_validator.Issuer,
+            audience:_validator.Audience,
+            expires:DateTime.UtcNow.AddMinutes(60),
             claims:claims,
             signingCredentials:signcredentials
 

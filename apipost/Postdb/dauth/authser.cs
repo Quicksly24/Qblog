@@ -2,20 +2,31 @@
 
 
 
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 public class Authuser : Iauth, Ifollow
-{
+{    
 
-     string connectstring= "";
-     string database = "User";
+    private readonly ConnectionStrings _connect;
+    private readonly Itoken key;
+
+    
+
+    public Authuser(IOptions<ConnectionStrings> connect,Itoken key)
+    {
+        _connect = connect.Value;
+        this.key = key;
+    }
+
+    string database = "User";
 
     string collectionname= "users";
 
     private IMongoCollection<T> getcollection<T>(in string collect){
 
-        var connect = new MongoClient(connectstring);
+        var connect = new MongoClient(_connect.MongoDbConnectionString);
         var db = connect.GetDatabase(database);
 
         return db.GetCollection<T>(collect);
@@ -24,12 +35,6 @@ public class Authuser : Iauth, Ifollow
     }
 
 
-    private readonly Itoken key;
-
-    public Authuser(Itoken key)
-    {
-        this.key = key;
-    }
 
     public Responseuser login(string username, string password)
     {
@@ -42,6 +47,7 @@ public class Authuser : Iauth, Ifollow
         var token = key.gentoken(username,password);
 
         var response = new Responseuser(){
+            id=exist.id,
             username=username,
             email=exist.email,
             token=token

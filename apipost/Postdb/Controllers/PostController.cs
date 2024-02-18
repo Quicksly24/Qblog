@@ -3,6 +3,7 @@ using Postdb.model;
 using Postdb.data;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 namespace Postdb.Controllers;
 
 [Authorize]
@@ -11,11 +12,17 @@ public class Postcontroller:ControllerBase{
 
     private readonly Ipost posts;
     private readonly Ilike like;
+    private readonly ILogger ilogger;
 
-    public Postcontroller(Ipost posts,Ilike like)
+    private readonly IConfiguration config;
+
+    public Postcontroller(Ipost posts,Ilike like,ILogger<Postcontroller> logger,IConfiguration config)
     {
         this.posts = posts;
         this.like = like;
+        ilogger=logger;
+
+        this.config=config;
     }
 
   
@@ -26,7 +33,7 @@ public class Postcontroller:ControllerBase{
        var user= User.FindFirstValue(ClaimTypes.Name);
        posts.Createpost(request,user);
 
-       return Ok(user);
+       return Ok("success");
 
     }
 
@@ -36,6 +43,9 @@ public class Postcontroller:ControllerBase{
     public ActionResult getallpost(){
 
        var response = posts.getpost();
+
+       ilogger.LogInformation("got users successfully");
+
        return Ok(response);
 
     }

@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Postdb.gmodel.post;
 using Postdb.model;
@@ -7,7 +9,14 @@ namespace Postdb.data
 {
     public class Mongodata : Ipost,Ilike
     {
-        string connectstring= "";
+
+        private readonly ConnectionStrings _connect;
+
+        public Mongodata(IOptions<ConnectionStrings> connect)
+        {
+            _connect = connect.Value;
+        }
+       
         string database="Quick";
         private const string colloctionname="Postv1";
     
@@ -17,7 +26,7 @@ namespace Postdb.data
 
         public IMongoCollection<T> mongoCollection<T>(in string collection)
         {
-            var connect = new MongoClient(connectstring);
+            var connect = new MongoClient(_connect.MongoDbConnectionString);
             var db = connect.GetDatabase(database);
             return db.GetCollection<T>(collection);
 
@@ -50,7 +59,10 @@ namespace Postdb.data
 
         public List<Post> getpost()
         {
+
+         
             var collect = mongoCollection<Post>(colloctionname);
+
             return collect.Find<Post>(_ => true).ToList();
         }
 

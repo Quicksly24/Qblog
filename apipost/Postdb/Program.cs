@@ -1,9 +1,14 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Postdb.data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<Validator>(builder.Configuration.GetSection("Validator"));
+builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
+
 
 // Add services to the container.
 
@@ -18,15 +23,21 @@ builder.Services.AddTransient<Exceptionhandler>();
 
 
 builder.Services.AddAuthentication(defaultScheme:JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters(){
+                .AddJwtBearer(options => {
 
-                    ValidIssuer="solo",
-                    ValidAudience="post",
-                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication-")),
+                    var jwtoptions = builder.Configuration.GetSection("Validator").Get<Validator>();
+
+                    options.TokenValidationParameters = new TokenValidationParameters(){
+
+                    ValidIssuer=jwtoptions?.Issuer,
+                    ValidAudience=jwtoptions?.Audience,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtoptions.secret)),
                     ValidateIssuer=true,
                     ValidateLifetime=true,
                     ValidateIssuerSigningKey=true,
                     ValidateAudience=true,
+
+                    };
 
                 });
 builder.Services.AddAuthorization();
