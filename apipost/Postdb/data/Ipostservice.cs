@@ -7,6 +7,8 @@ public interface Ipost{
    
     List<Post> getpost();
 
+    List<Post> getpostuser(string id);
+
     Post GetsinglePost(string id);
 
     void Createpost(Postrequest post,string user);

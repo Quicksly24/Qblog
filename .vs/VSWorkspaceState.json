@@ -2,10 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\apipost",
-    "\\apipost\\Postdb",
-    "\\apipost\\Postdb\\data",
-    "\\apipost\\Postdb\\gmodel",
+    "\\apipost\\Postdb\\bin",
     "\\apipost\\Postdb\\gmodel\\post"
   ],
+  "SelectedNode": "\\apipost\\Postdb",
   "PreviewInSolutionExplorer": false
 }

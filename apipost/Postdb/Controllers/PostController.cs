@@ -49,12 +49,24 @@ public class Postcontroller:ControllerBase{
        return Ok(response);
 
     }
-     
-  
-    [HttpGet ("api/Post/{id:int}")]
-    public ActionResult get1post(string request){
 
-       var response= posts.GetsinglePost(request);
+    [AllowAnonymous]
+    [HttpGet ("api/Post/user/{id}")]
+    public ActionResult getallpostbyuser(string id){
+
+       var response = posts.getpostuser(id);
+
+       ilogger.LogInformation("got all '{0}' post successfully",id);
+
+       return Ok(response);
+
+    }
+     
+   
+    [HttpGet ("api/Post/{id}")]
+    public ActionResult get1post(string id){
+
+       var response= posts.GetsinglePost(id);
        return Ok(response);
 
     }

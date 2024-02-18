@@ -63,7 +63,15 @@ namespace Postdb.data
          
             var collect = mongoCollection<Post>(colloctionname);
 
+
             return collect.Find<Post>(_ => true).ToList();
+        }
+
+        public List<Post> getpostuser(string id)
+        {
+            var collect = mongoCollection<Post>(colloctionname);
+
+            return collect.Find<Post>(x=>x.Username==id).ToList();
         }
 
         public Post GetsinglePost(string id)
@@ -125,6 +133,6 @@ namespace Postdb.data
             return num2;
         }
 
-
+        
     }
 }

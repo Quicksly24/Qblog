@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Postdb.model;
 
     public class Postrequest
