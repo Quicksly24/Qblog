@@ -14,7 +14,9 @@ public class User{
 
     public string password{get;set;}
 
-    public string token{get;set;}
+    public string RefreshToken{get;set;}
+
+    public DateTime expires{get;set;}
 
     public List<Followers> followers{get;set;}
 

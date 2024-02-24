@@ -7,6 +7,8 @@ public interface Iauth{
 
     public Responseuser login(string username,string password);
 
+    public string refresh(string refeshtoken,string jwt);
+
 
 
 }

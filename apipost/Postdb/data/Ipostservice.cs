@@ -9,6 +9,8 @@ public interface Ipost{
 
     List<Post> getpostuser(string id);
 
+    List<Post> getpostbyfollowers(string id);
+
     Post GetsinglePost(string id);
 
     void Createpost(Postrequest post,string user);

@@ -2,7 +2,11 @@
 
 
 
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -12,12 +16,15 @@ public class Authuser : Iauth, Ifollow
     private readonly ConnectionStrings _connect;
     private readonly Itoken key;
 
+    private readonly Validator _validator;
+
     
 
-    public Authuser(IOptions<ConnectionStrings> connect,Itoken key)
+    public Authuser(IOptions<ConnectionStrings> connect,Itoken key,IOptions<Validator> validator)
     {
         _connect = connect.Value;
         this.key = key;
+        _validator=validator.Value;
     }
 
     string database = "User";
@@ -44,15 +51,17 @@ public class Authuser : Iauth, Ifollow
 
          if (exist != null)
     {
-        var token = key.gentoken(username,password);
+        var token = key.gentoken(username,exist.email);
 
         var response = new Responseuser(){
             id=exist.id,
             username=username,
             email=exist.email,
-            token=token
-
+            token=token,
+            refreshtoken=exist.RefreshToken
         };
+
+        //reset refresh token
         
         return response;
     }
@@ -78,15 +87,18 @@ public class Authuser : Iauth, Ifollow
 
 
         var k=key.gentoken(username,email);
+        var refresh=key.genrefreshtoken();
 
         var user = new User{
             username=username,
             email=email,
-            token=k,
+            RefreshToken=refresh,
             password=password,
             followers=new List<Followers>{},
-            createdAt=DateTime.UtcNow
+            createdAt=DateTime.UtcNow,
+            expires=DateTime.UtcNow.AddDays(60)            
         };
+        //change this later
 
 
         collect.InsertOne(user);
@@ -95,11 +107,31 @@ public class Authuser : Iauth, Ifollow
             id=user.id,
             username=username,
             email=user.email,
-            token=k
+            token=k,
+            refreshtoken=refresh     
         };
         
         return response;
         
+    }
+
+    public string refresh(string refeshtoken, string jwt)
+    {
+        var principals = GetPrincipalFromExpiredToken(jwt);
+
+        if (principals?.Identity?.Name is null)
+               throw new Exception("user not authorized(name null)");
+        
+         var collect = getcollection<User>(collectionname);
+         var user = collect.Find(x=>x.username==principals.Identity.Name).FirstOrDefault();
+
+        if (user is null || user.RefreshToken != refeshtoken || user.expires < DateTime.UtcNow)
+                throw new Exception("user not authorized second failure point");
+
+        var tok = key.gentoken(user.username,user.email);
+
+        return tok;
+      
     }
 
     
@@ -128,5 +160,27 @@ public class Authuser : Iauth, Ifollow
         collect.UpdateOne(filter,update);
     }
 
+     private ClaimsPrincipal? GetPrincipalFromExpiredToken (string token) {
 
+        var jwtoptions = _validator;
+
+                
+        var Parameters = new TokenValidationParameters(){
+
+            ValidIssuer=jwtoptions?.Issuer,
+            ValidAudience=jwtoptions?.Audience,
+            IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtoptions.secret)),
+            ValidateIssuer=true,
+            ValidateLifetime=false,
+            ValidateIssuerSigningKey=true,
+            ValidateAudience=true,
+
+        };
+            
+        return new JwtSecurityTokenHandler().ValidateToken(token, Parameters, out _);
+    }
+
+
+
+    
 }

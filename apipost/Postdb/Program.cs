@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,7 @@ builder.Services.AddSingleton<Iauth,Authuser>();
 builder.Services.AddScoped<Ifollow,Authuser>();
 builder.Services.AddTransient<Exceptionhandler>();
 
+using var loggerFactory = LoggerFactory.Create(b => b.SetMinimumLevel(LogLevel.Trace).AddConsole());
 
 
 builder.Services.AddAuthentication(defaultScheme:JwtBearerDefaults.AuthenticationScheme)
@@ -27,6 +29,7 @@ builder.Services.AddAuthentication(defaultScheme:JwtBearerDefaults.Authenticatio
 
                     var jwtoptions = builder.Configuration.GetSection("Validator").Get<Validator>();
 
+//                 options.SaveToken=true;
                     options.TokenValidationParameters = new TokenValidationParameters(){
 
                     ValidIssuer=jwtoptions?.Issuer,
@@ -36,6 +39,13 @@ builder.Services.AddAuthentication(defaultScheme:JwtBearerDefaults.Authenticatio
                     ValidateLifetime=true,
                     ValidateIssuerSigningKey=true,
                     ValidateAudience=true,
+
+                    };
+
+                    options.Events = new JwtBearerEvents{
+
+                        OnChallenge = opt => LogAttempt(opt.Request.Headers,"OnChallenge"),
+                        OnTokenValidated=opt=> LogAttempt(opt.Request.Headers,"OnTokenValidated"),
 
                     };
 
@@ -83,3 +93,23 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+Task LogAttempt(IHeaderDictionary headers, string eventType)
+{
+    var logger = loggerFactory.CreateLogger<Program>();
+
+    var authorizationHeader = headers["Authorization"].FirstOrDefault();
+
+    if (authorizationHeader is null)
+        logger.LogInformation($"{eventType}. JWT not present");
+    else
+    {
+        string jwtString = authorizationHeader.Substring("Bearer ".Length);
+
+        var jwt = new JwtSecurityToken(jwtString);
+
+        logger.LogInformation($"{eventType}. Expiration: {jwt.ValidTo.ToLongTimeString()}. System time: {DateTime.UtcNow.ToLongTimeString()}");
+    }
+
+    return Task.CompletedTask;
+}

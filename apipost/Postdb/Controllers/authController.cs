@@ -1,5 +1,10 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 
 [ApiController]
@@ -9,10 +14,13 @@ public class Authcontoller:ControllerBase{
     private readonly Iauth _auth;
     private readonly Ifollow follow;
 
-    public Authcontoller(Iauth auth,Ifollow follow)
+    private readonly Validator _validator;
+
+    public Authcontoller(Iauth auth,Ifollow follow,IOptions<Validator> validator)
     {
         _auth = auth;
         this.follow = follow;
+        _validator=validator.Value;
     }
 
     [HttpPost("api/login")]
@@ -32,6 +40,16 @@ public class Authcontoller:ControllerBase{
         var response =  _auth.register(username,email,password);
 
         return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("api/refresh")]
+
+    public ActionResult refresh([FromBody]Refreshobject refresh){
+
+        var response=_auth.refresh(refresh.refreshtoken,refresh.expjwt);
+        return Ok(response);
+
     }
 
      [Authorize]
@@ -55,6 +73,5 @@ public class Authcontoller:ControllerBase{
         
     }
 
-
-
+    
 }

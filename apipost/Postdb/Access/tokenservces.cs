@@ -2,6 +2,7 @@
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -15,21 +16,22 @@ public class Tokenaccess:Itoken{
         _validator = validator.Value;
     }
 
-    public string gentoken(string username,string password){
+    
+    public string gentoken(string username,string email){
 
         
         var signcredentials= new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_validator.secret)),SecurityAlgorithms.HmacSha256);
 
         var claims= new[]{
             new Claim(ClaimTypes.Name,username),
-            new Claim(JwtRegisteredClaimNames.Email,password),
+            new Claim(JwtRegisteredClaimNames.Email,email),
             new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
         };
 
         var securitytoken = new JwtSecurityToken(
             issuer:_validator.Issuer,
             audience:_validator.Audience,
-            expires:DateTime.UtcNow.AddMinutes(60),
+            expires:DateTime.UtcNow.AddMinutes(10),
             claims:claims,
             signingCredentials:signcredentials
 
@@ -38,5 +40,17 @@ public class Tokenaccess:Itoken{
         return new JwtSecurityTokenHandler().WriteToken(securitytoken);
 
       }
+
+      public string genrefreshtoken()
+    {
+        var randomNumber = new byte[64];
+
+            using var generator = RandomNumberGenerator.Create();
+
+            generator.GetBytes(randomNumber);
+
+            return Convert.ToBase64String(randomNumber);
+    }
+
 
 }

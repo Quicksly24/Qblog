@@ -13,7 +13,6 @@ public class Postcontroller:ControllerBase{
     private readonly Ipost posts;
     private readonly Ilike like;
     private readonly ILogger ilogger;
-
     private readonly IConfiguration config;
 
     public Postcontroller(Ipost posts,Ilike like,ILogger<Postcontroller> logger,IConfiguration config)
@@ -61,13 +60,29 @@ public class Postcontroller:ControllerBase{
        return Ok(response);
 
     }
+
+    [AllowAnonymous]
+    [HttpGet ("api/Post/byfollowers/{id}")]
+    public ActionResult getpostbyfollowers(string id){
+
+       var response = posts.getpostbyfollowers(id);
+
+       ilogger.LogInformation("got all post made by people '{0}' follows-successfully",id);
+
+       return Ok(response);
+
+    }
      
    
     [HttpGet ("api/Post/{id}")]
     public ActionResult get1post(string id){
 
        var response= posts.GetsinglePost(id);
+      
        return Ok(response);
+
+      //  var user= User.FindFirstValue(ClaimTypes.Name);
+      // var email=User.FindFirstValue(ClaimTypes.Email);for testing purposes
 
     }
     
@@ -88,7 +103,7 @@ public class Postcontroller:ControllerBase{
 
     }
 
-     
+    [AllowAnonymous]
     [HttpPost("api/Post/like")]
 
     public ActionResult likepost(string postid,string user){

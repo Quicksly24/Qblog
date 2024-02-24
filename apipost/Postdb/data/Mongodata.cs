@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.ObjectModel;
+using System.Net;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -105,12 +106,13 @@ namespace Postdb.data
 
         public string Likepost(string postid,string user)
         {
-            var lik = new Likes{Postid=postid,User=user};
+            var lik = new Likes{Id=ObjectId.GenerateNewId().ToString(),Postid=postid,User=user};
 
             var collect = mongoCollection<Likes>(colloctionname2);
             collect.InsertOne(lik);
+        
 
-           return "success";
+           return lik.Id;
             
         }
 
@@ -133,6 +135,32 @@ namespace Postdb.data
             return num2;
         }
 
-        
+        private List<string> getfollowerslist(string userid){
+             
+            var con = new MongoClient(_connect.MongoDbConnectionString);
+            var dbs = con.GetDatabase("User");
+            var collection= dbs.GetCollection<User>("users");
+
+            var filter =  Builders<User>.Filter.ElemMatch(x=>x.followers,u=>u.userid == userid);
+            var userisfollowing= collection.Find(filter).ToList();
+
+            if(userisfollowing == null){
+                 throw new Exception("bitch pls follow somebody");
+            }   
+            return userisfollowing.Select(u=>u.username).ToList();
+                            
+        }
+
+        public List<Post> getpostbyfollowers(string userid)
+        {
+            var list= getfollowerslist(userid);
+
+            var filter1=Builders<Post>.Filter.In(x=>x.Username,list);
+
+            var coll = mongoCollection<Post>(colloctionname);
+            return coll.Find(filter1).ToList();
+           
+            //optimise this to trown an exception when list is null so the mongo query will not run
+        }
     }
 }
