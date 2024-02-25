@@ -104,24 +104,25 @@ namespace Postdb.data
                    
         }
 
-        public string Likepost(string postid,string user)
+        public Likeobj Likepost(string postid,string user)
         {
             var lik = new Likes{Id=ObjectId.GenerateNewId().ToString(),Postid=postid,User=user};
 
             var collect = mongoCollection<Likes>(colloctionname2);
             collect.InsertOne(lik);
         
+           Likeobj response = new Likeobj{likeid=lik.Id,state=true};
 
-           return lik.Id;
+           return response;
             
         }
 
-        public string unLikepost(string likeid)
+        public bool unLikepost(string likeid)
         {
            var collect = mongoCollection<Likes>(colloctionname2);  
            collect.DeleteOne(x=>x.Id==likeid);
 
-           return "success";
+           return false;
         }
 
       

@@ -114,7 +114,7 @@ public class Postcontroller:ControllerBase{
 
     }
 
-     
+     [AllowAnonymous]
     [HttpDelete("api/Post/like")]
 
     public ActionResult unlikepost(string likeid){

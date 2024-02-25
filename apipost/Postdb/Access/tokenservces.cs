@@ -1,5 +1,3 @@
-
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -17,13 +15,14 @@ public class Tokenaccess:Itoken{
     }
 
     
-    public string gentoken(string username,string email){
+    public string gentoken(string username,string email,string userid){
 
-        
+
         var signcredentials= new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_validator.secret)),SecurityAlgorithms.HmacSha256);
 
         var claims= new[]{
             new Claim(ClaimTypes.Name,username),
+            new Claim(ClaimTypes.NameIdentifier,userid),
             new Claim(JwtRegisteredClaimNames.Email,email),
             new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
         };

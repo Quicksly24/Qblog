@@ -2,12 +2,14 @@
 
 
 
+using Postdb.gmodel.post;
+
 public interface Ilike{
 
-    public string Likepost(string likeid,string user);
+    public Likeobj Likepost(string likeid,string user);
 
 
-    public string unLikepost(string likeid);
+    public bool unLikepost(string likeid);
 
 
     public long postcount(string postid);

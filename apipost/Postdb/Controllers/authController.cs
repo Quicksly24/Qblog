@@ -23,6 +23,21 @@ public class Authcontoller:ControllerBase{
         _validator=validator.Value;
     }
 
+    [Authorize]
+    [HttpGet("api/identity")]
+
+    public ActionResult identity(){
+         
+        var id=User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var name=User.FindFirstValue(ClaimTypes.Name);
+        var email=User.FindFirstValue(ClaimTypes.Email);
+
+        // var response = _auth.Identity(id,name,email);
+
+        return Ok(new{id,name,email});
+
+    }
+
     [HttpPost("api/login")]
 
     public ActionResult login(string name,string password){

@@ -41,6 +41,13 @@ public class Authuser : Iauth, Ifollow
 
     }
 
+    public Tempuser Identity(string id, string username, string email)
+    {
+        var response = new Tempuser{id=id,username=username,email=email};
+
+        return response;
+    }
+
 
 
     public Responseuser login(string username, string password)
@@ -51,12 +58,9 @@ public class Authuser : Iauth, Ifollow
 
          if (exist != null)
     {
-        var token = key.gentoken(username,exist.email);
+        var token = key.gentoken(username,exist.email,exist.id);
 
         var response = new Responseuser(){
-            id=exist.id,
-            username=username,
-            email=exist.email,
             token=token,
             refreshtoken=exist.RefreshToken
         };
@@ -73,7 +77,7 @@ public class Authuser : Iauth, Ifollow
     }
 
     
-    public Responseuser register(string username, string email, string password)
+    public string register(string username, string email, string password)
     {
         var collect = getcollection<User>(collectionname);
 
@@ -85,11 +89,13 @@ public class Authuser : Iauth, Ifollow
 
         };
 
+        var  objid = ObjectId.GenerateNewId().ToString();
+        var k=key.gentoken(username,email,objid);
 
-        var k=key.gentoken(username,email);
         var refresh=key.genrefreshtoken();
 
         var user = new User{
+            id=objid,
             username=username,
             email=email,
             RefreshToken=refresh,
@@ -103,15 +109,12 @@ public class Authuser : Iauth, Ifollow
 
         collect.InsertOne(user);
 
-         var response = new Responseuser(){
-            id=user.id,
-            username=username,
-            email=user.email,
-            token=k,
-            refreshtoken=refresh     
-        };
+        //  var response = new Responseuser(){
+        //     token=k,
+        //     refreshtoken=refresh     
+        // }; this returned a token previously
         
-        return response;
+        return "successfully registered ";
         
     }
 
@@ -128,7 +131,7 @@ public class Authuser : Iauth, Ifollow
         if (user is null || user.RefreshToken != refeshtoken || user.expires < DateTime.UtcNow)
                 throw new Exception("user not authorized second failure point");
 
-        var tok = key.gentoken(user.username,user.email);
+        var tok = key.gentoken(user.username,user.email,user.id);
 
         return tok;
       
@@ -181,6 +184,4 @@ public class Authuser : Iauth, Ifollow
     }
 
 
-
-    
 }

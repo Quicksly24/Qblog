@@ -15,4 +15,13 @@ namespace Postdb.gmodel.post
 
         
     }
+
+
+    public class Likeobj{
+
+        public string likeid{get;set;}
+
+        public bool state{get;set;}=false;
+
+    }
 }
