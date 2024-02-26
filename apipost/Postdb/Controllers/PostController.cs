@@ -50,8 +50,8 @@ public class Postcontroller:ControllerBase{
     }
 
     [AllowAnonymous]
-    [HttpGet ("api/Post/user/{id}")]
-    public ActionResult getallpostbyuser(string id){
+    [HttpPost ("api/Post/user")]
+    public ActionResult getallpostbyuser([FromBody]string id){
 
        var response = posts.getpostuser(id);
 
