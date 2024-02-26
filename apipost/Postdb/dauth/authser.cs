@@ -137,6 +137,31 @@ public class Authuser : Iauth, Ifollow
       
     }
 
+    public Tempuser pageIdentity(string id)
+    {
+         var collect = getcollection<User>(collectionname);
+
+        var exist = collect.Find(u => u.id == id).FirstOrDefault();
+
+         if (exist != null)
+    {
+
+        var response = new Tempuser(){
+            id=exist.id,
+            username=exist.username,
+            email=exist.email
+        };
+       
+        return response;
+    }
+    else
+    {
+        throw new Exception("invalid user identity status code:"+ StatusCodes.Status404NotFound);
+        // return null;
+    }
+   
+    }
+
     
 
     public void follow(string id,string followerid)
@@ -183,5 +208,5 @@ public class Authuser : Iauth, Ifollow
         return new JwtSecurityTokenHandler().ValidateToken(token, Parameters, out _);
     }
 
-
+    
 }

@@ -9,6 +9,8 @@ public interface Iauth{
 
 
     public Tempuser Identity(string id,string username,string email);
+
+    public Tempuser pageIdentity(string id);
     
     public string refresh(string refeshtoken,string jwt);
 
