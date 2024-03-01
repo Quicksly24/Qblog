@@ -30,7 +30,8 @@ public class Postcontroller:ControllerBase{
 
 
        var user= User.FindFirstValue(ClaimTypes.Name);
-       posts.Createpost(request,user);
+       var id= User.FindFirstValue(ClaimTypes.NameIdentifier);
+       posts.Createpost(request,user,id);
 
        return Ok("success");
 

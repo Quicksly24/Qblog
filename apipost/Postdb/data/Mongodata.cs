@@ -21,7 +21,7 @@ namespace Postdb.data
         string database="Quick";
         private const string colloctionname="Postv1";
     
-        private const string colloctionname2 = "Likes";
+        private const string colloctionname2 = "LikesV2";
 
     
 
@@ -34,12 +34,13 @@ namespace Postdb.data
         }
 
 
-        public void Createpost(Postrequest post,string user)
+        public void Createpost(Postrequest post,string user,string id)
         {
             var posts = new Post{
                   body=post.body,
                   title=post.title,
                   Username=user,
+                  Userid=id,
                   CreatedAt=DateTime.UtcNow
 
             };
@@ -106,7 +107,7 @@ namespace Postdb.data
 
         public Likeobj Likepost(string postid,string user)
         {
-            var lik = new Likes{Id=ObjectId.GenerateNewId().ToString(),Postid=postid,User=user};
+            var lik = new Likes{Id=ObjectId.GenerateNewId().ToString(),Postid=postid,Userid=user};
 
             var collect = mongoCollection<Likes>(colloctionname2);
             collect.InsertOne(lik);

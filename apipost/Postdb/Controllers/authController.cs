@@ -2,7 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -42,9 +44,11 @@ public class Authcontoller:ControllerBase{
 
     public ActionResult login(string name,string password){
 
-        var response = _auth.login(name,password);
-
-        return Ok(response);
+       
+            var response = _auth.login(name,password);
+            return Ok(response);
+        
+        
     }
 
 

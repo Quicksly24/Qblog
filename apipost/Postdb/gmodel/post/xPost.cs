@@ -9,6 +9,8 @@ public class Post
 
          public string Username{get;set;}
 
+         public string Userid{get;set;}
+
          public string title{get;set;}
 
          public string body{get;set;}

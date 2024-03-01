@@ -9,9 +9,11 @@ namespace Postdb.gmodel.post
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Postid { get; set; }
 
-        public string User { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Userid { get; set; }
 
         
     }

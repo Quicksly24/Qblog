@@ -13,7 +13,7 @@ public interface Ipost{
 
     Post GetsinglePost(string id);
 
-    void Createpost(Postrequest post,string user);
+    void Createpost(Postrequest post,string user,string id);
 
     void updatepost(Post post);
 
