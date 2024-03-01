@@ -62,7 +62,8 @@ public class Authuser : Iauth, Ifollow
 
         var response = new Responseuser(){
             token=token,
-            refreshtoken=exist.RefreshToken
+            refreshtoken=exist.RefreshToken,
+            id=exist.id
         };
 
         //reset refresh token

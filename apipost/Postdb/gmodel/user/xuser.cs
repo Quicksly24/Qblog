@@ -5,4 +5,6 @@ public class Responseuser{
 
     public string? refreshtoken{get;set;}
 
+    public string? id{get;set;}
+
 }
