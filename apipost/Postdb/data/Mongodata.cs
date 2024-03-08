@@ -73,7 +73,7 @@ namespace Postdb.data
         {
             var collect = mongoCollection<Post>(colloctionname);
 
-            return collect.Find<Post>(x=>x.id==id).ToList();
+            return collect.Find<Post>(x=>x.Userid==id).ToList();
         }
 
         public Post GetsinglePost(string id)
